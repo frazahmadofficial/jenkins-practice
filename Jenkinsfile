@@ -9,12 +9,24 @@ pipeline {
             }
         }
 
+
         stage('Test') {
             steps {
                 sh 'test -f app.txt'
                 echo 'Test passed: app.txt exists.'
             }
         }
+
+
+        stage('Secret Check') {
+            steps {
+                withCredentials([string(credentialsId: 'demo-secret', variable: 'DEMO_SECRET')]) {
+                    sh 'test -n "$DEMO_SECRET"'
+                    echo 'Secret loaded securely without displaying it.'
+                }
+            }
+        }
+
 
         stage('Deploy') {
             steps {
