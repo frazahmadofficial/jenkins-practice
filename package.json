@@ -1,0 +1,21 @@
+{
+  "name": "jenkins-practice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js",
+    "build": "node build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frazahmadofficial/jenkins-practice.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frazahmadofficial/jenkins-practice/issues"
+  },
+  "homepage": "https://github.com/frazahmadofficial/jenkins-practice#readme"
+}
