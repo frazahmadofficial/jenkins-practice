@@ -21,7 +21,7 @@ pipeline {
                 sh 'mkdir -p deployed'
                 sh 'cp app.txt deployed/'
                 sh 'ls -l deployed/app.txt'
-                echo 'Deployment completed.'
+                echo ' Automatic deployment completed.'
             }
         }
     }
