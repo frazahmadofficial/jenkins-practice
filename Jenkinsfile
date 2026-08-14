@@ -2,12 +2,37 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage('Build') {
             steps {
-                echo 'Pipeline loaded from Jenkinsfile!'
+                sh 'echo "Fraz Jenkins Application" > app.txt'
+                sh 'ls -l app.txt'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'test -f app.txt'
+                echo 'Test passed: app.txt exists.'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'mkdir -p deployed'
+                sh 'cp app.txt deployed/'
+                sh 'ls -l deployed/app.txt'
+                echo 'Deployment completed.'
             }
         }
     }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline failed. Check Console Output.'
+        }
+    }
 }
-
-
