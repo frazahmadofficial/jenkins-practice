@@ -2,21 +2,32 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Environment') {
             steps {
-                sh 'echo "Fraz Jenkins Application" > app.txt'
-                sh 'ls -l app.txt'
+                sh 'node --version'
+                sh 'npm --version'
             }
         }
 
+        stage('Install') {
+            steps {
+                sh 'npm ci'
+            }
+        }
 
         stage('Test') {
             steps {
-                sh 'test -f app.txt'
-                echo 'Test passed: app.txt exists.'
+                sh 'npm test'
             }
         }
 
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+                sh 'node dist/app.js'
+                sh 'ls -l dist/app.js'
+            }
+        }
 
         stage('Secret Check') {
             steps {
@@ -27,24 +38,21 @@ pipeline {
             }
         }
 
-
-        stage('Deploy') {
+        stage('Archive') {
             steps {
-                sh 'mkdir -p deployed'
-                sh 'cp app.txt deployed/'
-                sh 'ls -l deployed/app.txt'
-                echo ' Automatic deployment completed.'
+                archiveArtifacts artifacts: 'dist/**', fingerprint: true
+                echo 'Build artifact archived successfully.'
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Node.js CI pipeline completed successfully!'
         }
 
         failure {
-            echo 'Pipeline failed. Check Console Output.'
+            echo 'Node.js CI pipeline failed. Check Console Output.'
         }
     }
 }
