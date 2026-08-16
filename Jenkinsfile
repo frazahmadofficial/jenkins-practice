@@ -44,6 +44,15 @@ pipeline {
                 echo 'Build artifact archived successfully.'
             }
         }
+
+        stage('Deploy') {
+            steps {
+                sh 'mkdir -p /var/lib/jenkins/deployments/jenkins-practice'
+                sh 'cp dist/app.js /var/lib/jenkins/deployments/jenkins-practice/app.js'
+                sh 'node /var/lib/jenkins/deployments/jenkins-practice/app.js'
+                echo 'Application deployed locally.'
+            }
+        }
     }
 
     post {
