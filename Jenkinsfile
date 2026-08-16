@@ -47,21 +47,22 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh 'mkdir -p /var/lib/jenkins/deployments/jenkins-practice'
-                sh 'cp dist/app.js /var/lib/jenkins/deployments/jenkins-practice/app.js'
-                sh 'node /var/lib/jenkins/deployments/jenkins-practice/app.js'
-                echo 'Application deployed locally.'
+                sh 'mkdir -p /var/lib/jenkins/deployments/jenkins-practice/releases/$BUILD_NUMBER'
+                sh 'cp dist/app.js /var/lib/jenkins/deployments/jenkins-practice/releases/$BUILD_NUMBER/app.js'
+                sh 'ln -sfn /var/lib/jenkins/deployments/jenkins-practice/releases/$BUILD_NUMBER /var/lib/jenkins/deployments/jenkins-practice/current'
+                sh 'node /var/lib/jenkins/deployments/jenkins-practice/current/app.js'
+                echo "Build #${env.BUILD_NUMBER} deployed locally."
             }
         }
     }
 
     post {
         success {
-            echo 'Node.js CI pipeline completed successfully!'
+            echo 'Node.js CI/CD pipeline completed successfully!'
         }
 
         failure {
-            echo 'Node.js CI pipeline failed. Check Console Output.'
+            echo 'Node.js CI/CD pipeline failed. Check Console Output.'
         }
     }
 }
